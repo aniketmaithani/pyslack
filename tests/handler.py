@@ -26,7 +26,6 @@ class ClientTest(unittest.TestCase):
         logger.error("Oh noh!")
 
         client_chatpostmessage.assert_called_with(
-                '#channel', 
-                '[ERROR] Oh noh!',
-                username='botname')
-
+            '#channel',
+            '[ERROR] Oh noh!',
+            username='botname')

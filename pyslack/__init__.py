@@ -27,8 +27,8 @@ class SlackClient(object):
         """
         if self.blocked_until is not None and \
                 datetime.datetime.utcnow() < self.blocked_until:
-            raise SlackError("Too many requests - wait until {0}" \
-                    .format(self.blocked_until))
+            raise SlackError("Too many requests - wait until {0}"
+                             .format(self.blocked_until))
 
         url = "%s/%s" % (SlackClient.BASE_URL, method)
         params['token'] = self.token
@@ -38,9 +38,9 @@ class SlackClient(object):
             # Too many requests
             retry_after = int(response.headers.get('retry-after', '1'))
             self.blocked_until = datetime.datetime.utcnow() + \
-                    datetime.timedelta(seconds=retry_after)
-            raise SlackError("Too many requests - retry after {0} second(s)" \
-                    .format(retry_after))
+                datetime.timedelta(seconds=retry_after)
+            raise SlackError("Too many requests - retry after {0} second(s)"
+                             .format(retry_after))
 
         result = response.json()
         if not result['ok']:
@@ -109,11 +109,13 @@ class SlackClient(object):
 
 
 class SlackHandler(logging.Handler):
+
     """A logging handler that posts messages to a Slack channel!
 
     References:
     http://docs.python.org/2/library/logging.html#handler-objects
     """
+
     def __init__(self, token, channel, **kwargs):
         super(SlackHandler, self).__init__()
         self.client = SlackClient(token)

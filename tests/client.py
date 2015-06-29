@@ -17,7 +17,7 @@ class ClientTest(unittest.TestCase):
         client = pyslack.SlackClient(self.token)
 
         reply = {"ok": True}
-        r_post.return_value.json = Mock(return_value = reply)
+        r_post.return_value.json = Mock(return_value=reply)
 
         result = client.chat_post_message('#channel', 'message')
         self.assertEqual(reply, result)
@@ -48,8 +48,8 @@ class ClientTest(unittest.TestCase):
             client.chat_post_message('#channel', 'message')
 
         self.assertEqual(r_post.call_count, 1)
-        self.assertGreater(client.blocked_until, 
-                datetime.datetime.utcnow() + datetime.timedelta(seconds=8))
+        self.assertGreater(client.blocked_until,
+                           datetime.datetime.utcnow() + datetime.timedelta(seconds=8))
 
         # A second send attempt should also throw, but without creating a request
         with self.assertRaises(pyslack.SlackError) as context:
@@ -59,11 +59,10 @@ class ClientTest(unittest.TestCase):
 
         # After the time has expired, it should be business as usual
         client.blocked_until = datetime.datetime.utcnow() - \
-                datetime.timedelta(seconds=5)
+            datetime.timedelta(seconds=5)
 
         r_post.return_value = Mock(status_code=200)
         r_post.return_value.json.return_value = {"ok": True}
 
         client.chat_post_message('#channel', 'message')
         self.assertEqual(r_post.call_count, 2)
-
